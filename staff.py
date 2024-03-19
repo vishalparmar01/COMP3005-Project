@@ -6,11 +6,13 @@ class AdministrativeStaff:
         self.password = password
         self.id = None
 
-        # Create the administrative_staff table if it doesn't exist
-        cursor = self.db_connection.cursor()
+    @staticmethod
+    def create_table(db_connection):
+                # Create the administrative_staff table if it doesn't exist
+        cursor = db_connection.cursor()
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS administrative_staff (
-                id INT AUTO_INCREMENT PRIMARY KEY,
+                id SERIAL PRIMARY KEY,
                 name VARCHAR(255) NOT NULL,
                 email VARCHAR(255) NOT NULL,
                 password VARCHAR(255) NOT NULL
@@ -20,10 +22,10 @@ class AdministrativeStaff:
         cursor.close()
 
         # Create the room_bookings table if it doesn't exist
-        cursor = self.db_connection.cursor()
+        cursor = db_connection.cursor()
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS room_bookings (
-                id INT AUTO_INCREMENT PRIMARY KEY,
+                id SERIAL PRIMARY KEY,
                 room_number INT NOT NULL,
                 booking_date DATE,
                 booking_time TIME
@@ -33,10 +35,10 @@ class AdministrativeStaff:
         cursor.close()
 
         # Create the equipment_maintenance table if it doesn't exist
-        cursor = self.db_connection.cursor()
+        cursor = db_connection.cursor()
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS equipment_maintenance (
-                id INT AUTO_INCREMENT PRIMARY KEY,
+                id SERIAL PRIMARY KEY,
                 equipment_name VARCHAR(255) NOT NULL,
                 last_maintenance_date DATE
             )
@@ -45,10 +47,10 @@ class AdministrativeStaff:
         cursor.close()
 
         # Create the payments table if it doesn't exist
-        cursor = self.db_connection.cursor()
+        cursor = db_connection.cursor()
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS payments (
-                id INT AUTO_INCREMENT PRIMARY KEY,
+                id SERIAL PRIMARY KEY,
                 member_id INT NOT NULL,
                 payment_amount DECIMAL(10, 2) NOT NULL,
                 payment_date DATE,

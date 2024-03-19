@@ -8,11 +8,14 @@ class Member:
         self.fitness_goal = None
         self.health_metrics = None
 
-        # Create the members table if it doesn't exist
-        cursor = self.db_connection.cursor()
+
+    @staticmethod
+    def create_table(db_connection):
+                # Create the members table if it doesn't exist
+        cursor = db_connection.cursor()
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS members (
-                id INT AUTO_INCREMENT PRIMARY KEY,
+                id SERIAL PRIMARY KEY,
                 name VARCHAR(255) NOT NULL,
                 email VARCHAR(255) NOT NULL,
                 password VARCHAR(255) NOT NULL,
@@ -24,10 +27,10 @@ class Member:
         cursor.close()
 
         # Create the training_sessions table if it doesn't exist
-        cursor = self.db_connection.cursor()
+        cursor = db_connection.cursor()
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS training_sessions (
-                id INT AUTO_INCREMENT PRIMARY KEY,
+                id SERIAL PRIMARY KEY,
                 member_id INT NOT NULL,
                 trainer_id INT NOT NULL,
                 session_date DATE,
@@ -40,10 +43,10 @@ class Member:
         cursor.close()
 
         # Create the class_registrations table if it doesn't exist
-        cursor = self.db_connection.cursor()
+        cursor = db_connection.cursor()
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS class_registrations (
-                id INT AUTO_INCREMENT PRIMARY KEY,
+                id SERIAL PRIMARY KEY,
                 member_id INT NOT NULL,
                 class_id INT NOT NULL,
                 FOREIGN KEY (member_id) REFERENCES members(id),
