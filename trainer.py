@@ -6,34 +6,6 @@ class Trainer:
         self.password = password
         self.id = None
 
-    @staticmethod
-    def create_table(db_connection):
-        # Create the trainers table if it doesn't exist
-        cursor = db_connection.cursor()
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS trainers (
-                id SERIAL PRIMARY KEY,
-                name VARCHAR(255) NOT NULL,
-                email VARCHAR(255) NOT NULL,
-                password VARCHAR(255) NOT NULL
-            )
-        """)
-        db_connection.commit()
-        cursor.close()
-
-        # Create the trainer_schedule table if it doesn't exist
-        cursor = db_connection.cursor()
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS trainer_schedule (
-                id SERIAL PRIMARY KEY,
-                trainer_id INT NOT NULL,
-                available_time TIME,
-                FOREIGN KEY (trainer_id) REFERENCES trainers(id)
-            )
-        """)
-        db_connection.commit()
-        cursor.close()
-
     def register(self):
         cursor = self.db_connection.cursor()
         cursor.execute("INSERT INTO trainers (name, email, password) VALUES (%s, %s, %s)", (self.name, self.email, self.password))
