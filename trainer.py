@@ -9,8 +9,9 @@ class Trainer:
     def register(self):
         cursor = self.db_connection.cursor()
         cursor.execute("INSERT INTO trainers (name, email, password) VALUES (%s, %s, %s)", (self.name, self.email, self.password))
+        cursor.execute("SELECT LASTVAL()")
+        self.id = cursor.fetchone()[0]
         self.db_connection.commit()
-        self.id = cursor.lastrowid
         cursor.close()
 
     @staticmethod

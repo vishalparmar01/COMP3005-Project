@@ -12,8 +12,9 @@ class Member:
     def register(self):
         cursor = self.db_connection.cursor()
         cursor.execute("INSERT INTO members (name, email, password, fitness_goal, health_metrics) VALUES (%s, %s, %s, %s, %s)", (self.name, self.email, self.password, self.fitness_goal, self.health_metrics))
+        cursor.execute("SELECT LASTVAL()")
+        self.id = cursor.fetchone()[0]
         self.db_connection.commit()
-        self.id = cursor.lastrowid
         cursor.close()
 
     @staticmethod
@@ -32,7 +33,7 @@ class Member:
 
     def update_profile(self, db_connection, field, value):
         cursor = db_connection.cursor()
-        print("Updated the password")
+        print("Updated the password ",self.id)
         cursor.execute(f'''
             UPDATE members
             SET {field} = %s

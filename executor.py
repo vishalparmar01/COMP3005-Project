@@ -4,19 +4,14 @@ from staff import AdministrativeStaff
 from trainer import Trainer
 
 # Function to create all tables
-def create_tables():
+def create_tables(db_connection):
     try:
-        # Connect to the PostgreSQL database
-        db_connection = psycopg2.connect(
-            dbname="healthproject",
-            user="postgres",
-            password="tanayShah",
-            host="localhost",
-            port="5432"
-        )
-
         # Create a cursor object using the connection
         cursor = db_connection.cursor()
+
+        cursor.execute("""
+        DROP TABLE IF EXISTS trainer_schedule, class_registrations, training_sessions, administrative_staff, classes, trainers, members CASCADE
+    """)
 
         # Create the members table if it doesn't exist
         cursor.execute("""
@@ -133,13 +128,9 @@ def create_tables():
         # Commit the changes and close the cursor and the database connection
         db_connection.commit()
         cursor.close()
-        db_connection.close()
 
     except psycopg2.Error as e:
         print("Error creating tables:", e)
-
-# Create all tables
-create_tables()
 
 
 def main():
@@ -153,6 +144,7 @@ def main():
             port="5432"
         )
 
+        create_tables(db_connection)
         # Create a cursor object using the connection
         cursor = db_connection.cursor()
 
@@ -162,15 +154,21 @@ def main():
         member.health_metrics = "Weight: 150 lbs, Height: 5'7\""
         member.register()
         member.update_profile(db_connection,'password', 'tanay')
-        # member.schedule_training_session(trainer_id=1, session_date="2024-04-01", session_time="09:00:00")
+
+        member2 = Member(db_connection, "arjun pathak", "arjun.pathak@example.com", "password789")
+        member2.fitness_goal = "Gain muscle"
+        member2.health_metrics = "Weight: 150 lbs, Height: 5'7\""
+        member2.register()
+        member2.update_profile(db_connection,'fitness_goal', 'Loose Fat')
+        
         # member.register_for_class(class_id=1)
 
         # Example usage for Trainer
         
         trainer = Trainer(db_connection, "John Doe", "john.doe@example.com", "password123")
         trainer.register()
-        # trainer.manage_schedule(available_times=["09:00:00", "10:00:00", "11:00:00"])
-
+        trainer.manage_schedule(available_times=["09:00:00", "10:00:00", "11:00:00"])
+        member2.schedule_training_session(trainer_id=1, session_date="2024-04-01", session_time="13:00:00")
         # Example usage for AdministrativeStaff
         staff = AdministrativeStaff(db_connection, "Jane Smith", "jane.smith@example.com", "password456")
         staff.register()
