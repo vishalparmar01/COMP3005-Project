@@ -1,3 +1,5 @@
+from trainer import Trainer
+
 class Member:
     def __init__(self, db_connection, name, email, password):
         self.db_connection = db_connection
@@ -39,14 +41,17 @@ class Member:
             SET {field} = %s
             WHERE id = %s
         ''',(value, self.id))
-        # cursor.execute(f"UPDATE members SET {field} = %s WHERE id = %s", (value, self.id))
         self.db_connection.commit()
         cursor.close()
 
     def schedule_training_session(self, trainer_id, session_date, session_time):
         cursor = self.db_connection.cursor()
-        cursor.execute("INSERT INTO training_sessions (member_id, trainer_id, session_date, session_time) VALUES (%s, %s, %s, %s)", (self.id, trainer_id, session_date, session_time))
-        self.db_connection.commit()
+        avail_trainers=Trainer.get_available_trainers(self.db_connection,session_date,session_time)
+        if(avail_trainers == []):
+            print("There are no trainers available  at this time.")
+        else:
+            cursor.execute("INSERT INTO training_sessions (member_id, trainer_id, session_date, session_time) VALUES (%s, %s, %s, %s)", (self.id, trainer_id, session_date, session_time))
+            self.db_connection.commit()
         cursor.close()
 
     def register_for_class(self, class_id):

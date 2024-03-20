@@ -36,14 +36,29 @@ class Trainer:
     @staticmethod
     def get_available_trainers(db_connection, session_date, session_time):
         cursor = db_connection.cursor()
-        cursor.execute("SELECT * FROM trainers WHERE id NOT IN (SELECT DISTINCT trainer_id FROM training_sessions WHERE session_date = %s AND session_time = %s)", (session_date, session_time))
+        cursor.execute("""
+            SELECT * FROM trainers
+            WHERE id NOT IN (
+                SELECT DISTINCT trainer_id
+                FROM training_sessions
+                WHERE session_date = %s AND session_time = %s
+            )
+        """, (session_date, session_time))
         trainers = []
         for trainer_data in cursor.fetchall():
-            trainer = Trainer(db_connection, trainer_data[1], trainer_data[2], trainer_data[3])
-            trainer.id = trainer_data[0]
-            trainers.append(trainer)
+            trainer_id = trainer_data[0]
+            # Check if session_time is in the trainer's schedule
+            cursor.execute("""
+                SELECT * FROM trainer_schedule
+                WHERE trainer_id = %s AND available_time = %s
+            """, (trainer_id, session_time))
+            if cursor.fetchone() is not None:
+                trainer = Trainer(db_connection, trainer_data[1], trainer_data[2], trainer_data[3])
+                trainer.id = trainer_id
+                trainers.append(trainer)
         cursor.close()
         return trainers
+
     
     def search_member_profile_by_name(self, member_name, member):
         # Search for a member profile by name

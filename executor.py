@@ -160,7 +160,6 @@ def main():
         member2.health_metrics = "Weight: 150 lbs, Height: 5'7\""
         member2.register()
         member2.update_profile(db_connection,'fitness_goal', 'Loose Fat')
-        
         # member.register_for_class(class_id=1)
 
         # Example usage for Trainer
@@ -168,7 +167,10 @@ def main():
         trainer = Trainer(db_connection, "John Doe", "john.doe@example.com", "password123")
         trainer.register()
         trainer.manage_schedule(available_times=["09:00:00", "10:00:00", "11:00:00"])
-        member2.schedule_training_session(trainer_id=1, session_date="2024-04-01", session_time="13:00:00")
+        
+
+        member2.schedule_training_session(trainer_id=1, session_date="2024-04-01", session_time="10:00:00")
+        member.schedule_training_session(trainer_id=1, session_date="2024-04-01", session_time="10:00:00")
         
         # Test the search_member_profile_by_name method
         member_profile = trainer.search_member_profile_by_name("Alice Smith", member)
@@ -184,7 +186,7 @@ def main():
             print("Member profile found:")
             print("Name:", member_profile.name)
             print("Email:", member_profile.email)
-        
+
         # Example usage for AdministrativeStaff
         staff = AdministrativeStaff(db_connection, "Jane Smith", "jane.smith@example.com", "password456")
         staff.register()
