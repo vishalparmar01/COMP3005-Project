@@ -1,3 +1,4 @@
+
 class Trainer:
     def __init__(self, db_connection, name, email, password):
         self.db_connection = db_connection
@@ -58,3 +59,21 @@ class Trainer:
         cursor.close()
         return trainers
 
+    
+    def search_member_profile_by_name(self, member_name, member):
+        # Search for a member profile by name
+        cursor = self.db_connection.cursor()
+        cursor.execute("SELECT * FROM members WHERE name = %s", (member_name,))
+        member_data = cursor.fetchone()
+        cursor.close()
+        if member_data:
+            # Update the provided member object with retrieved data
+            member.id = member_data[0]
+            member.name = member_data[1]
+            member.email = member_data[2]
+            member.password = member_data[3]
+            member.fitness_goal = member_data[4]
+            member.health_metrics = member_data[5]
+            return member
+        return None
+    
