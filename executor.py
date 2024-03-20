@@ -139,7 +139,7 @@ def main():
         db_connection = psycopg2.connect(
             dbname="healthproject",
             user="postgres",
-            password="tanayShah",
+            password="vishal.24",
             host="localhost",
             port="5432"
         )
@@ -169,6 +169,22 @@ def main():
         trainer.register()
         trainer.manage_schedule(available_times=["09:00:00", "10:00:00", "11:00:00"])
         member2.schedule_training_session(trainer_id=1, session_date="2024-04-01", session_time="13:00:00")
+        
+        # Test the search_member_profile_by_name method
+        member_profile = trainer.search_member_profile_by_name("Alice Smith", member)
+
+        if member_profile:
+            print("Member profile found:")
+            print("Name:", member_profile.name)
+            print("Email:", member_profile.email)
+
+        member_profile = trainer.search_member_profile_by_name("arjun pathak", member)
+
+        if member_profile:
+            print("Member profile found:")
+            print("Name:", member_profile.name)
+            print("Email:", member_profile.email)
+        
         # Example usage for AdministrativeStaff
         staff = AdministrativeStaff(db_connection, "Jane Smith", "jane.smith@example.com", "password456")
         staff.register()
