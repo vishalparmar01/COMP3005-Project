@@ -4,7 +4,7 @@ from staff import AdministrativeStaff
 from trainer import Trainer
 
 # Function to create tables from DDL file
-def create_tables_from_file(db_connection, ddl_file_path):
+def create_tables_and_load_data(db_connection, ddl_file_path, dml_file_path=None):
     try:
         # Create a cursor object using the connection
         cursor = db_connection.cursor()
@@ -15,6 +15,14 @@ def create_tables_from_file(db_connection, ddl_file_path):
 
         # Execute the DDL commands
         cursor.execute(ddl_commands)
+
+        # If a DML file is provided, execute the DML commands
+        if dml_file_path:
+            with open(dml_file_path, 'r') as dml_file:
+                dml_commands = dml_file.read()
+
+            # Execute the DML commands
+            cursor.execute(dml_commands)
 
         # Commit the changes and close the cursor
         db_connection.commit()
@@ -36,8 +44,9 @@ def main():
         )
 
         ddl_file_path = "tables.sql"
+        dml_file_path = "data.sql"
         # Create tables from the DDL file
-        create_tables_from_file(db_connection, ddl_file_path)
+        create_tables_and_load_data(db_connection, ddl_file_path,dml_file_path)
         # Create a cursor object using the connection
         cursor = db_connection.cursor()
 
@@ -48,8 +57,8 @@ def main():
         Member.update_profile(db_connection,"Arjun Pathak",'fitness_goal', 'Loose Fat')
 
         # Example usage for Trainer
-        Trainer.register(db_connection,"John Doe", "john.doe@example.com", "password123")
-        Trainer.manage_schedule(db_connection,"John Doe",available_times=["09:00:00", "10:00:00", "11:00:00"])
+        Trainer.register(db_connection,"Vishal Parmar", "vish.parmar@example.com", "password123")
+        Trainer.manage_schedule(db_connection,"Vishal Parmar",available_times=["09:00:00", "10:00:00", "11:00:00"])
         Trainer.register(db_connection,"Tanay Shah", "tanay.shah@example.com", "tanayshah")
         Trainer.manage_schedule(db_connection,"Tanay Shah",available_times=["10:00:00", "11:00:00", "13:00:00"])
         trainers=Trainer.get_available_trainers(db_connection, session_date="2024-04-01",session_time="15:00:00")
