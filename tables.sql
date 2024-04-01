@@ -1,5 +1,5 @@
 -- DDL file for creating tables
-DROP TABLE IF EXISTS trainer_schedule, class_registrations, training_sessions, administrative_staff, classes, trainers, members CASCADE;
+DROP TABLE IF EXISTS payments, equipment_maintenance, room_bookings, trainer_schedule, class_registrations, training_sessions, administrative_staff, classes, trainers, members CASCADE;
 
 -- Create the members table
 CREATE TABLE IF NOT EXISTS members (
@@ -34,7 +34,10 @@ CREATE TABLE IF NOT EXISTS training_sessions (
 CREATE TABLE IF NOT EXISTS classes (
     id SERIAL PRIMARY KEY,
     class_name VARCHAR(255) NOT NULL,
-    class_description TEXT
+    class_description TEXT,
+    start_time TIME NOT NULL,
+    end_time TIME NOT NULL,
+    recurrence VARCHAR(255) NOT NULL -- For example, "everyday", "weekdays", etc.
 );
 
 -- Create the class_registrations table
@@ -65,7 +68,8 @@ CREATE TABLE IF NOT EXISTS room_bookings (
 CREATE TABLE IF NOT EXISTS equipment_maintenance (
     id SERIAL PRIMARY KEY,
     equipment_name VARCHAR(255) NOT NULL,
-    last_maintenance_date DATE
+    last_maintenance_date DATE,
+    maintenance_frequency VARCHAR(255)
 );
 
 CREATE TABLE IF NOT EXISTS payments (

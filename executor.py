@@ -84,12 +84,12 @@ def main():
             print("Email:", member_profile[2])
 
         # Example usage for AdministrativeStaff
-        # staff = AdministrativeStaff(db_connection, "Jane Smith", "jane.smith@example.com", "password456")
-        # staff.register()
-        # # staff.manage_room_booking(room_number=101, booking_date="2024-04-01", booking_time="09:00:00")
-        # staff.monitor_equipment_maintenance(equipment_name="Treadmill", last_maintenance_date="2024-03-01")
-        # # staff.update_class_schedule(class_id=1, new_schedule="Monday, Wednesday, Friday 18:00-19:00")
         # staff.process_payment(member_id=3, amount=50.00, payment_date="2024-04-01")
+        AdministrativeStaff.register(db_connection,"Jane Smith", "jane.smith@example.com", "password456")
+        AdministrativeStaff.manage_room_booking(db_connection,room_number=101, booking_date="2024-04-01", booking_time="10:00:00")
+        AdministrativeStaff.monitor_equipment_maintenance(db_connection,"Cross-fit","2024-03-15","6 Months")
+        AdministrativeStaff.update_class_schedule()
+
 
     except psycopg2.Error as e:
         print("Error connecting to the database:", e)
