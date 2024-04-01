@@ -76,7 +76,7 @@ class AdministrativeStaff:
 
     @classmethod
     def update_class_schedule(
-        cls, db_connection, class_name, new_schedule, start_time, end_time, recurrence
+        cls, db_connection, class_name, description, start_time, end_time, recurrence
     ):
         cursor = db_connection.cursor()
         # Check if the class exists, and insert it if it doesn't
@@ -84,8 +84,8 @@ class AdministrativeStaff:
         class_data = cursor.fetchone()
         if not class_data:
             cursor.execute(
-                "INSERT INTO classes (class_name, class_schedule, start_time, end_time, recurrence) VALUES (%s, %s, %s, %s, %s)",
-                (class_name, new_schedule, start_time, end_time, recurrence),
+                "INSERT INTO classes (class_name, class_description, start_time, end_time, recurrence) VALUES (%s, %s, %s, %s, %s)",
+                (class_name, description, start_time, end_time, recurrence),
             )
             db_connection.commit()
             cursor.close()
@@ -93,8 +93,8 @@ class AdministrativeStaff:
 
         class_id = class_data[0]
         cursor.execute(
-            "UPDATE classes SET class_schedule = %s, start_time = %s, end_time = %s, recurrence = %s WHERE id = %s",
-            (new_schedule, start_time, end_time, recurrence, class_id),
+            "UPDATE classes SET start_time = %s, end_time = %s, recurrence = %s WHERE id = %s",
+            (start_time, end_time, recurrence, class_id),
         )
         db_connection.commit()
         cursor.close()
