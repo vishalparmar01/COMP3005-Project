@@ -64,13 +64,27 @@ class Member:
         cursor.close()
 
     @classmethod
-    def register_for_class(cls, db_connection, member_name, class_id):
+    def register_for_class(cls, db_connection, member_name, class_name):
         cursor = db_connection.cursor()
+        
+        # Get the member_id for the given member_name
         cursor.execute("SELECT id FROM members WHERE name = %s", (member_name,))
         member_id = cursor.fetchone()[0]
+        
+        # Get the class_id for the given class_name
+        cursor.execute("SELECT id FROM classes WHERE class_name = %s", (class_name,))
+        class_id = cursor.fetchone()[0]
+        
+        # Insert the registration into class_registrations
         cursor.execute(
             "INSERT INTO class_registrations (member_id, class_id) VALUES (%s, %s)",
             (member_id, class_id),
         )
         db_connection.commit()
         cursor.close()
+
+    @classmethod
+    def book_room(cls, db_connection, booking_date, booking_time):
+        # Use the manage_room_booking method from AdministrativeStaff
+        room_number = AdministrativeStaff.manage_room_booking(db_connection, booking_date, booking_time)
+        return room_number if room_number else None

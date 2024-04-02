@@ -108,11 +108,14 @@ class AdministrativeStaff:
         cursor.close()
 
     @classmethod
-    def process_payment(cls, db_connection, member_id, amount, payment_date):
+    def process_payment(cls, db_connection, member_name, amount, payment_date):
         cursor = db_connection.cursor()
+        cursor.execute("SELECT id FROM members WHERE name = %s", (member_name,))
+        member_id = cursor.fetchone()[0]
         cursor.execute(
             "INSERT INTO payments (member_id, payment_amount, payment_date) VALUES (%s, %s, %s)",
             (member_id, amount, payment_date),
         )
         db_connection.commit()
         cursor.close()
+

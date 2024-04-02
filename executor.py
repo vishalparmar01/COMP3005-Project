@@ -55,6 +55,7 @@ def main():
         Member.update_profile(db_connection,"Alice Smith",'password','tanay')
         Member.register(db_connection,"Arjun Pathak", "arjun.pathak@example.com", "password789","Gain muscle", "Weight: 150 lbs, Height: 5'7\"")
         Member.update_profile(db_connection,"Arjun Pathak",'fitness_goal', 'Loose Fat')
+        Member.register_for_class(db_connection,"Arjun Pathak","Yoga")
 
         # Example usage for Trainer
         Trainer.register(db_connection,"Vishal Parmar", "vish.parmar@example.com", "password123")
@@ -91,6 +92,7 @@ def main():
         AdministrativeStaff.manage_room_booking(db_connection, booking_date="2024-04-01", booking_time="10:00:00")
         AdministrativeStaff.monitor_equipment_maintenance(db_connection,"Cross-fit","2024-03-15","6 Months")
         AdministrativeStaff.update_class_schedule(db_connection,"Meditation","Relaxing your Body","10:00:00","11:00:00","everyday")
+        AdministrativeStaff.process_payment(db_connection,"Arjun Pathak",100.23,"2024-03-17")
 
 
     except psycopg2.Error as e:
