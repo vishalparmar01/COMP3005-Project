@@ -23,30 +23,38 @@ class AdministrativeStaff:
         return None
 
     @classmethod
-    def manage_room_booking(
-        cls, db_connection, room_number, booking_date, booking_time
-    ):
+    def manage_room_booking(cls, db_connection, booking_date, booking_time):
         cursor = db_connection.cursor()
 
-        # Check if the room is already booked at the given date and time
-        cursor.execute(
-            "SELECT * FROM room_bookings WHERE room_number = %s AND booking_date = %s AND booking_time = %s",
-            (room_number, booking_date, booking_time),
-        )
-        existing_booking = cursor.fetchone()
-        if existing_booking:
-            print(
-                f"Room {room_number} is already booked on {booking_date} at {booking_time}"
-            )
-            return
+        # Get all distinct room numbers
+        cursor.execute("SELECT DISTINCT room_number FROM room_bookings")
+        all_rooms = [row[0] for row in cursor.fetchall()]
 
-        # Insert the new booking
+        # Check for booked rooms at the given date and time
+        cursor.execute(
+            "SELECT DISTINCT room_number FROM room_bookings WHERE booking_date = %s AND booking_time = %s",
+            (booking_date, booking_time),
+        )
+        booked_rooms = [row[0] for row in cursor.fetchall()]
+
+        # Find available rooms
+        available_rooms = [room for room in all_rooms if room not in booked_rooms]
+
+        if not available_rooms:
+            print(f"No available rooms on {booking_date} at {booking_time}")
+            return None
+
+        # Book the first available room
+        room_number = available_rooms[0]
         cursor.execute(
             "INSERT INTO room_bookings (room_number, booking_date, booking_time) VALUES (%s, %s, %s)",
             (room_number, booking_date, booking_time),
         )
         db_connection.commit()
         cursor.close()
+
+        print(f"Room {room_number} booked on {booking_date} at {booking_time}")
+        return room_number
 
     @classmethod
     def monitor_equipment_maintenance(

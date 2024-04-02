@@ -1,5 +1,5 @@
 from trainer import Trainer
-
+from staff import AdministrativeStaff
 
 class Member:
     @classmethod
