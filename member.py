@@ -32,21 +32,6 @@ class Member:
         cursor.close()
         return member_id
 
-
-    @classmethod
-    def update_profile(cls, db_connection, name, field, value):
-        cursor = db_connection.cursor()
-        cursor.execute(
-            f"""
-             UPDATE members
-             SET {field} = %s
-             WHERE name = %s
-         """,
-            (value, name),
-        )
-        db_connection.commit()
-        cursor.close()
-
     @classmethod
     def update_member(cls, db_connection, member_name, field, value):
         cursor = db_connection.cursor()
@@ -127,24 +112,6 @@ class Member:
         # Use the manage_room_booking method from AdministrativeStaff
         room_number = AdministrativeStaff.manage_room_booking(db_connection, booking_date, booking_time)
         return room_number if room_number else None
-    
-    @classmethod
-    def update_weight(cls, db_connection, member_name, weight):
-        cursor = db_connection.cursor()
-        
-        # Get the member ID for the given member name
-        cursor.execute("SELECT id FROM members WHERE name = %s", (member_name,))
-        member_id = cursor.fetchone()[0]
-        
-        # Insert the new weight entry
-        cursor.execute(
-            "INSERT INTO health_metrics (member_id, weight) VALUES (%s, %s)",
-            (member_id, weight),
-        )
-        db_connection.commit()
-        cursor.close()
-
-
     
     @classmethod
     def display_dashboard(cls, db_connection, member_name):

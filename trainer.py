@@ -1,4 +1,12 @@
 class Trainer:
+    db_connection = None
+
+    def __init__(self, id=None, name=None, email=None, password=None):
+        self.id = id
+        self.name = name
+        self.email = email
+        self.password = password
+
     @classmethod
     def register(cls, db_connection, name, email, password):
         cursor = db_connection.cursor()
