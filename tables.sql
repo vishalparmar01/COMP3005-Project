@@ -1,5 +1,5 @@
 -- DDL file for creating tables
-DROP TABLE IF EXISTS payments, equipment_maintenance, room_bookings, trainer_schedule, class_registrations, training_sessions, administrative_staff, classes, trainers, members CASCADE;
+DROP TABLE IF EXISTS health_metrics, payments, equipment_maintenance, room_bookings, trainer_schedule, class_registrations, training_sessions, administrative_staff, classes, trainers, members CASCADE;
 
 -- Create the members table
 CREATE TABLE IF NOT EXISTS members (
@@ -7,8 +7,7 @@ CREATE TABLE IF NOT EXISTS members (
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
-    fitness_goal VARCHAR(255),
-    health_metrics VARCHAR(255)
+    fitness_goal VARCHAR(255)
 );
 
 -- Create the trainers table
@@ -85,4 +84,13 @@ CREATE TABLE IF NOT EXISTS trainer_schedule (
     trainer_id INT NOT NULL,
     available_time TIME,
     FOREIGN KEY (trainer_id) REFERENCES trainers(id)
+);
+
+CREATE TABLE IF NOT EXISTS health_metrics (
+    id SERIAL PRIMARY KEY,
+    member_id INT NOT NULL,
+    weight DECIMAL(5,2),
+    height DECIMAL(5,2),
+    -- Add other health metrics columns as needed
+    FOREIGN KEY (member_id) REFERENCES members(id)
 );

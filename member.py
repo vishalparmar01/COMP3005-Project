@@ -10,18 +10,28 @@ class Member:
         email,
         password,
         fitness_goal=None,
-        health_metrics=None,
+        weight=None,
+        height=None,
     ):
         cursor = db_connection.cursor()
         cursor.execute(
-            "INSERT INTO members (name, email, password, fitness_goal, health_metrics) VALUES (%s, %s, %s, %s, %s)",
-            (name, email, password, fitness_goal, health_metrics),
+            "INSERT INTO members (name, email, password, fitness_goal) VALUES (%s, %s, %s, %s)",
+            (name, email, password, fitness_goal),
         )
         cursor.execute("SELECT LASTVAL()")
         member_id = cursor.fetchone()[0]
+        
+        # Insert health metrics if weight and height are provided
+        if weight is not None and height is not None:
+            cursor.execute(
+                "INSERT INTO health_metrics (member_id, weight, height) VALUES (%s, %s, %s)",
+                (member_id, weight, height),
+            )
+
         db_connection.commit()
         cursor.close()
         return member_id
+
 
     @classmethod
     def update_profile(cls, db_connection, name, field, value):
@@ -36,6 +46,35 @@ class Member:
         )
         db_connection.commit()
         cursor.close()
+
+    @classmethod
+    def update_member(cls, db_connection, member_name, field, value):
+        cursor = db_connection.cursor()
+        
+        if field == 'weight':
+            # Get the member ID for the given member name
+            cursor.execute("SELECT id FROM members WHERE name = %s", (member_name,))
+            member_id = cursor.fetchone()[0]
+            
+            # Insert the new weight entry
+            cursor.execute(
+                "INSERT INTO health_metrics (member_id, weight) VALUES (%s, %s)",
+                (member_id, value),
+            )
+        else:
+            # Update the profile field
+            cursor.execute(
+                f"""
+                UPDATE members
+                SET {field} = %s
+                WHERE name = %s
+            """,
+                (value, member_name),
+            )
+
+        db_connection.commit()
+        cursor.close()
+
 
     @classmethod
     def schedule_training_session(
@@ -88,3 +127,53 @@ class Member:
         # Use the manage_room_booking method from AdministrativeStaff
         room_number = AdministrativeStaff.manage_room_booking(db_connection, booking_date, booking_time)
         return room_number if room_number else None
+    
+    @classmethod
+    def update_weight(cls, db_connection, member_name, weight):
+        cursor = db_connection.cursor()
+        
+        # Get the member ID for the given member name
+        cursor.execute("SELECT id FROM members WHERE name = %s", (member_name,))
+        member_id = cursor.fetchone()[0]
+        
+        # Insert the new weight entry
+        cursor.execute(
+            "INSERT INTO health_metrics (member_id, weight) VALUES (%s, %s)",
+            (member_id, weight),
+        )
+        db_connection.commit()
+        cursor.close()
+
+
+    
+    @classmethod
+    def display_dashboard(cls, db_connection, member_name):
+        cursor = db_connection.cursor()
+        
+        # Get the member ID for the given member name
+        cursor.execute("SELECT id FROM members WHERE name = %s", (member_name,))
+        member_id = cursor.fetchone()[0]
+        
+        # Retrieve health metrics for the member
+        cursor.execute("SELECT * FROM health_metrics WHERE member_id = %s", (member_id,))
+        health_metrics = cursor.fetchall()
+
+        # Retrieve class registrations for the member
+        cursor.execute("SELECT class_id FROM class_registrations WHERE member_id = %s", (member_id,))
+        class_ids = cursor.fetchall()
+        classes = []
+        for class_id in class_ids:
+            cursor.execute("SELECT * FROM classes WHERE id = %s", (class_id,))
+            classes.append(cursor.fetchone())
+
+        # Print health metrics
+        print(f"Health Metrics for {member_name}:")
+        for metric in health_metrics:
+            print(f"Weight: {metric[2]}")
+
+        # Print class schedule
+        print(f"\nClass Schedule for {member_name}:")
+        for class_info in classes:
+            print(f"Class: {class_info[1]}, Description: {class_info[2]}, Start Time: {class_info[3]}, End Time: {class_info[4]}, Recurrence: {class_info[5]}")
+
+        cursor.close()

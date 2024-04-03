@@ -1,7 +1,7 @@
 -- Insert data into the members table
-INSERT INTO members (name, email, password, fitness_goal, health_metrics) VALUES
-('Alice Smith', 'alice@example.com', 'password123', 'Lose weight', '{"weight": 65, "height": 170}'),
-('Bob Johnson', 'bob@example.com', 'securepw', 'Gain muscle', '{"weight": 80, "height": 185}');
+INSERT INTO members (name, email, password, fitness_goal) VALUES
+('Rahul Cheruku', 'rahulch@example.com', 'password123', 'Lose weight'),
+('Bob Johnson', 'bob@example.com', 'securepw', 'Gain muscle');
 
 -- Insert data into the trainers table
 INSERT INTO trainers (name, email, password) VALUES
