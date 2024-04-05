@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Member</title>
+</head>
+<body>
+    <h1>Register Member</h1>
+    <form action="/register-member/" method="post">
+        {% csrf_token %}
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name"><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email"><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password"><br>
+
+        <label for="fitness_goal">Fitness Goal:</label>
+        <input type="text" id="fitness_goal" name="fitness_goal"><br>
+
+        <input type="submit" name="register" value="Register">
+    </form>
+
+    <h1>Update Member</h1>
+    <form action="/register-member/" method="post">
+        {% csrf_token %}
+        <label for="member_name">Member Name:</label>
+        <input type="text" id="member_name" name="member_name"><br>
+
+        <label for="field">Field:</label>
+        <input type="text" id="field" name="field"><br>
+
+        <label for="value">Value:</label>
+        <input type="text" id="value" name="value"><br>
+
+        <input type="submit" name="update" value="Update">
+    </form>
+
+    <!-- New form for registering for a class -->
+    <h1>Register for Class</h1>
+    <form action="/register-member/" method="post">
+        {% csrf_token %}
+        <label for="member_name_class">Member Name:</label>
+        <input type="text" id="member_name_class" name="member_name" required><br>
+
+        <label for="class_name">Class Name:</label>
+        <input type="text" id="class_name" name="class_name" required><br>
+
+        <input type="submit" name="register_for_class" value="Register for Class">
+    </form>
+
+    <form action="/register-member/" method="post">
+        {% csrf_token %}
+        <label for="display_dashboard">Enter Member Name to Display Dashboard:</label>
+        <input type="text" id="display_dashboard" name="display_dashboard"><br>
+        <input type="submit" value="Display Dashboard">
+    </form>
+
+    <h1>Members Info</h1>
+    <table>
+        <tr>
+            {% for column_name in column_names %}
+            <th>{{ column_name }}</th>
+            {% endfor %}
+        </tr>
+        {% for member in members %}
+        <tr>
+            {% for field in member %}
+            <td>{{ field }}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+
+    {% if member_name %}
+        <h2>Dashboard for {{ member_name }}</h2>
+        <h3>Health Metrics:</h3>
+        {% for metric in health_metrics %}
+        <p>Weight: {{ metric.2 }}, Height: {{ metric.3 }}</p>
+        {% endfor %}
+
+        <h3>Class Schedule:</h3>
+        {% for class_info in class_schedule %}
+        <p>Class Name: {{ class_info.1 }}, Description: {{ class_info.2 }}, Start Time: {{ class_info.3 }}, End Time: {{ class_info.4 }}, Recurrence: {{ class_info.5 }}</p>
+        {% endfor %}
+    {% else %}
+        <p>Please enter a member name to display the dashboard.</p>
+    {% endif %}
+
+    <h1>Schedule Training Session</h1>
+    <form action="/register-member/" method="post">
+        {% csrf_token %}
+        <label for="member_name_session">Member Name:</label>
+        <input type="text" id="member_name_session" name="member_name_session" required><br>
+
+        <label for="trainer_name">Trainer Name:</label>
+        <input type="text" id="trainer_name" name="trainer_name" required><br>
+
+        <label for="session_date">Session Date:</label>
+        <input type="date" id="session_date" name="session_date" required><br>
+
+        <label for="session_time">Session Time:</label>
+        <input type="time" id="session_time" name="session_time" required><br>
+
+        <input type="submit" name="schedule_training" value="Schedule Training">
+    </form>
+    
+    <h1>Book Room</h1>
+    <form action="/register-member/" method="post">
+        {% csrf_token %}
+        <label for="booking_date">Booking Date:</label>
+        <input type="date" id="booking_date" name="booking_date" required><br>
+
+        <label for="booking_time">Booking Time:</label>
+        <input type="time" id="booking_time" name="booking_time" required><br>
+
+        <input type="submit" name="book_room" value="Book Room">
+    </form>
+</body>
+</html>
