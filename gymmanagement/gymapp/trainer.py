@@ -46,6 +46,7 @@ class Trainer:
             )
         db_connection.commit()
         cursor.close()
+        return trainer_id
 
     @classmethod
     def from_db_data(cls, db_connection, trainer_data):

@@ -22,5 +22,7 @@ from gymapp import views  # Import your views from gymapp
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('register-member/', views.register_member, name='register_member'),
-
+    path('register-trainer/', views.register_trainer, name='register_trainer'),
+    path('register-staff/', views.register_staff, name='register_staff'),
+    path('homepage/', views.homepage, name='homepage'),
 ]
