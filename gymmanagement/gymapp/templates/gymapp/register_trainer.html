@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Trainer</title>
+</head>
+<body>
+    <h1>Register Trainer</h1>
+    <form action="/register-trainer/" method="post">
+        {% csrf_token %}
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name"><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email"><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password"><br>
+
+        <input type="submit" name="register" value="Register">
+    </form>
+
+    <form action="/register-trainer/" method="post">
+        {% csrf_token %}
+        <label for="search_member">Search Member Profile:</label>
+        <input type="text" id="search_member" name="search_member"><br>
+        <input type="submit" value="Search">
+    </form>
+
+    {% if member_profile %}
+        <h2>Profile for {{ member_profile.name }}</h2>
+        <p>ID: {{ member_profile.id }}</p>
+        <p>Email: {{ member_profile.email }}</p>
+        <p>Fitness Goals: {{ member_profile.fitness_goal }}</p>
+    {% endif %}
+
+    <form action="/register-trainer/" method="post">
+        {% csrf_token %}
+        <label for="trainer_name">Trainer Name:</label>
+        <input type="text" id="trainer_name" name="trainer_name"><br>
+    
+        <label for="available_time">Available Time:</label>
+        <input type="time" id="available_time" name="available_time"><br>
+    
+        <input type="submit" name="manage_schedule" value="Manage Schedule">
+    </form>
+    
+</body>
+</html>
