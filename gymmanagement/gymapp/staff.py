@@ -23,7 +23,7 @@ class AdministrativeStaff:
         return None
 
     @classmethod
-    def manage_room_booking(cls, db_connection, booking_date, booking_time):
+    def manage_room_booking(cls, db_connection, member_id, booking_date, booking_time):
         cursor = db_connection.cursor()
 
         # Get all distinct room numbers
@@ -46,9 +46,13 @@ class AdministrativeStaff:
 
         # Book the first available room
         room_number = available_rooms[0]
+        
+        # Determine the value to insert for member_id
+        member_id_value = member_id if member_id is not None else "NULL"
+        
         cursor.execute(
-            "INSERT INTO room_bookings (room_number, booking_date, booking_time) VALUES (%s, %s, %s)",
-            (room_number, booking_date, booking_time),
+            "INSERT INTO room_bookings (room_number, booking_date, booking_time, member_id) VALUES (%s, %s, %s, %s)",
+            (room_number, booking_date, booking_time, member_id_value),
         )
         db_connection.commit()
         cursor.close()
@@ -58,26 +62,38 @@ class AdministrativeStaff:
 
     @classmethod
     def monitor_equipment_maintenance(
-        cls, db_connection, equipment_name, last_maintenance_date, frequency=None
+        cls, db_connection, staff_name, equipment_name, last_maintenance_date, frequency=None
     ):
         cursor = db_connection.cursor()
+        
+        # Get the staff ID from the staff name
+        cursor.execute(
+            "SELECT id FROM administrative_staff WHERE name = %s",
+            (staff_name,),
+        )
+        staff_id = cursor.fetchone()
+        
+        if not staff_id:
+            raise ValueError("No staff found with the given name")
+
         # Check if equipment exists in the table
         cursor.execute(
             "SELECT * FROM equipment_maintenance WHERE equipment_name = %s",
             (equipment_name,),
         )
         existing_equipment = cursor.fetchone()
+        
         if existing_equipment:
-            # Update the last maintenance date
+            # Update the last maintenance date and staff ID
             cursor.execute(
-                "UPDATE equipment_maintenance SET last_maintenance_date = %s WHERE equipment_name = %s",
-                (last_maintenance_date, equipment_name),
+                "UPDATE equipment_maintenance SET last_maintenance_date = %s, staff_id = %s WHERE equipment_name = %s",
+                (last_maintenance_date, staff_id[0], equipment_name),
             )
         else:
-            # Insert new equipment with last maintenance date
+            # Insert new equipment with last maintenance date and staff ID
             cursor.execute(
-                "INSERT INTO equipment_maintenance (equipment_name, last_maintenance_date, maintenance_frequency) VALUES (%s, %s, %s)",
-                (equipment_name, last_maintenance_date, frequency),
+                "INSERT INTO equipment_maintenance (equipment_name, last_maintenance_date, maintenance_frequency, staff_id) VALUES (%s, %s, %s, %s)",
+                (equipment_name, last_maintenance_date, frequency, staff_id[0]),
             )
         db_connection.commit()
         cursor.close()

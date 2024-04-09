@@ -61,14 +61,16 @@ CREATE TABLE IF NOT EXISTS room_bookings (
     id SERIAL PRIMARY KEY,
     room_number INT NOT NULL,
     booking_date DATE,
-    booking_time TIME
+    booking_time TIME,
+    FOREIGN KEY (member_id) REFERENCES members(id)
 );
 
 CREATE TABLE IF NOT EXISTS equipment_maintenance (
     id SERIAL PRIMARY KEY,
     equipment_name VARCHAR(255) NOT NULL,
     last_maintenance_date DATE,
-    maintenance_frequency VARCHAR(255)
+    maintenance_frequency VARCHAR(255),
+    FOREIGN KEY (staff_id) REFERENCES administrative_staff(id)
 );
 
 CREATE TABLE IF NOT EXISTS payments (
@@ -91,6 +93,5 @@ CREATE TABLE IF NOT EXISTS health_metrics (
     member_id INT NOT NULL,
     weight DECIMAL(5,2),
     height DECIMAL(5,2),
-    -- Add other health metrics columns as needed
     FOREIGN KEY (member_id) REFERENCES members(id)
 );

@@ -32,13 +32,13 @@ INSERT INTO administrative_staff (name, email, password) VALUES
 
 -- Insert data into the room_bookings table
 INSERT INTO room_bookings (room_number, booking_date, booking_time) VALUES
-(101, '2024-04-01', '10:00:00'),
-(102, '2024-04-01', NULL),
-(103, '2024-04-01', NULL),
-(104, '2024-04-01', NULL);
+(101, '2024-04-01', '10:00:00',NULL),
+(102, '2024-04-01', NULL, NULL),
+(103, '2024-04-01', NULL, NULL),
+(104, '2024-04-01', NULL, NULL);
 
 -- Inserting data into equipment_maintenance table
 INSERT INTO equipment_maintenance (equipment_name, last_maintenance_date, maintenance_frequency) VALUES
-    ('Treadmill', '2023-01-01', '6 months'),
-    ('Elliptical Machine', '2023-02-15', '8 months'),
-    ('Stationary Bike', '2023-03-20', '12 months');
+    ('Treadmill', '2023-01-01', '6 months', NULL),
+    ('Elliptical Machine', '2023-02-15', '8 months', NULL),
+    ('Stationary Bike', '2023-03-20', '12 months', NULL);

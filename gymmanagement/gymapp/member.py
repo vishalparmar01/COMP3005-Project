@@ -108,10 +108,19 @@ class Member:
         cursor.close()
 
     @classmethod
-    def book_room(cls, db_connection, booking_date, booking_time):
+    def book_room(cls, db_connection, member_name, booking_date, booking_time):
+        cursor = db_connection.cursor()
+        cursor.execute("SELECT id FROM members WHERE name = %s", (member_name,))
+        member_id = cursor.fetchone()
+        cursor.close()
+        
+        if not member_id:
+            raise ValueError("No member found with the given name")
+
         # Use the manage_room_booking method from AdministrativeStaff
-        room_number = AdministrativeStaff.manage_room_booking(db_connection, booking_date, booking_time)
+        room_number = AdministrativeStaff.manage_room_booking(db_connection, member_id[0], booking_date, booking_time)
         return room_number if room_number else None
+
     
     @classmethod
     def display_dashboard(cls, db_connection, member_name):

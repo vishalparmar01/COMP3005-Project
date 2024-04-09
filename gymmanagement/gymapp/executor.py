@@ -86,9 +86,9 @@ def main():
 
         # Example usage for AdministrativeStaff
         AdministrativeStaff.register(db_connection,"Jane Smith", "jane.smith@example.com", "password456")
-        AdministrativeStaff.manage_room_booking(db_connection, booking_date="2024-04-01", booking_time="10:00:00")
-        AdministrativeStaff.manage_room_booking(db_connection, booking_date="2024-04-01", booking_time="10:00:00")
-        AdministrativeStaff.monitor_equipment_maintenance(db_connection,"Cross-fit","2024-03-15","6 Months")
+        AdministrativeStaff.manage_room_booking(db_connection,None, booking_date="2024-04-01", booking_time="10:00:00")
+        AdministrativeStaff.manage_room_booking(db_connection, None,booking_date="2024-04-01", booking_time="10:00:00")
+        AdministrativeStaff.monitor_equipment_maintenance(db_connection,"Jane Smith","Cross-fit","2024-03-15","6 Months")
         AdministrativeStaff.update_class_schedule(db_connection,"Meditation","Relaxing your Body","10:00:00","11:00:00","everyday")
         AdministrativeStaff.process_payment(db_connection,"Arjun Pathak",100.23,"2024-03-17")
 
