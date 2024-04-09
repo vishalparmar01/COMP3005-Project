@@ -48,7 +48,7 @@ class AdministrativeStaff:
         room_number = available_rooms[0]
         
         # Determine the value to insert for member_id
-        member_id_value = member_id if member_id is not None else "NULL"
+        member_id_value = member_id if member_id is not None else None
         
         cursor.execute(
             "INSERT INTO room_bookings (room_number, booking_date, booking_time, member_id) VALUES (%s, %s, %s, %s)",
