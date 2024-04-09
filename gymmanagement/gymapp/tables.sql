@@ -62,6 +62,7 @@ CREATE TABLE IF NOT EXISTS room_bookings (
     room_number INT NOT NULL,
     booking_date DATE,
     booking_time TIME,
+    member_id INT,
     FOREIGN KEY (member_id) REFERENCES members(id)
 );
 
@@ -70,6 +71,7 @@ CREATE TABLE IF NOT EXISTS equipment_maintenance (
     equipment_name VARCHAR(255) NOT NULL,
     last_maintenance_date DATE,
     maintenance_frequency VARCHAR(255),
+    staff_id INT,
     FOREIGN KEY (staff_id) REFERENCES administrative_staff(id)
 );
 
