@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.db import connection
+from .models import Discussion, MealPlan, Image
 from .member import Member
 from .trainer import Trainer
 from .staff import AdministrativeStaff
@@ -53,11 +54,12 @@ def register_member(request):
             )
         
         elif 'book_room' in request.POST:
+            name = request.POST.get('members_name')
             booking_date = request.POST.get('booking_date')
             booking_time = request.POST.get('booking_time')
             # Call the book_room method from your class
             room_number = Member.book_room(
-                connection, booking_date, booking_time
+                connection, name, booking_date, booking_time
             )
 
     if member_name:
@@ -126,17 +128,19 @@ def register_staff(request):
             AdministrativeStaff.register(connection, name, email, password)
 
         if 'manage_room_booking' in request.POST:
+            member_id = request.POST.get('member_id')
             booking_date = request.POST.get('booking_date')
             booking_time = request.POST.get('booking_time')
             if booking_date and booking_time:  # Check if the fields are not empty
-                room_number = AdministrativeStaff.manage_room_booking(connection, booking_date, booking_time)
+                room_number = AdministrativeStaff.manage_room_booking(connection, member_id, booking_date, booking_time)
 
         if 'manage_equipment_maintenance' in request.POST:
+            staff_name = request.POST.get('staff_name')
             equipment_name = request.POST.get('equipment_name')
             last_maintenance_date = request.POST.get('last_maintenance_date')
             frequency = request.POST.get('frequency')
             if equipment_name and last_maintenance_date:  # Check if the fields are not empty
-                AdministrativeStaff.monitor_equipment_maintenance(connection, equipment_name, last_maintenance_date, frequency)
+                AdministrativeStaff.monitor_equipment_maintenance(connection, staff_name, equipment_name, last_maintenance_date, frequency)
         
         if 'update_class_schedule' in request.POST:
             class_name = request.POST.get('class_name')
@@ -160,4 +164,20 @@ def register_staff(request):
 
 def homepage(request):
     return render(request, 'gymapp/homepage.html')
+
+
+
+def community_page(request):
+    if request.method == 'POST':
+        image_file = request.FILES['image_file']
+        caption = request.POST['caption']
+
+        image = Image(image_file=image_file, caption=caption)
+        image.save()
+
+        return redirect('community_page')
+
+    images = Image.objects.all()
+
+    return render(request, 'gymapp/community_page.html', {'images': images})
 

@@ -26,6 +26,9 @@
     <h1>Manage Room Booking</h1>
     <form action="/register-staff/" method="post">
         {% csrf_token %}
+        <label for="member_id">Member ID:</label>
+        <input type="text" id="member_id" name="member_id"><br>
+
         <label for="booking_date">Booking Date:</label>
         <input type="date" id="booking_date" name="booking_date"><br>
 
@@ -38,6 +41,9 @@
     <h1>Manage Equipment Maintenance</h1>
     <form action="/register-staff/" method="post">
         {% csrf_token %}
+        <label for="staff_name">Staff Name:</label>
+        <input type="text" id="staff_name" name="staff_name"><br>
+
         <label for="equipment_name">Equipment Name:</label>
         <input type="text" id="equipment_name" name="equipment_name"><br>
 

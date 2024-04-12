@@ -113,6 +113,9 @@
     <h1>Book Room</h1>
     <form action="/register-member/" method="post">
         {% csrf_token %}
+        <label for="members_name">Member Name</label>
+        <input type="text" id="members_name" name="members_name" required><br>
+
         <label for="booking_date">Booking Date:</label>
         <input type="date" id="booking_date" name="booking_date" required><br>
 

@@ -18,11 +18,14 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import RedirectView
 from gymapp import views  # Import your views from gymapp
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('register-member/', views.register_member, name='register_member'),
     path('register-trainer/', views.register_trainer, name='register_trainer'),
     path('register-staff/', views.register_staff, name='register_staff'),
+    path('community_page/', views.community_page, name='community_page'),
     path('homepage/', views.homepage, name='homepage'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
