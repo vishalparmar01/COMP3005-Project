@@ -5,6 +5,7 @@ from .models import Discussion, MealPlan, Image
 from .member import Member
 from .trainer import Trainer
 from .staff import AdministrativeStaff
+from django.contrib import messages
 
 def register_member(request):
     members = None
@@ -39,9 +40,10 @@ def register_member(request):
         
         elif 'register_for_class' in request.POST:
             member_name = request.POST.get('member_name')
-            class_name = request.POST.get('class_name')
+            class_name = request.POST.get('class_name')   
             # Call the register_for_class method from your Member class
             Member.register_for_class(connection, member_name, class_name)
+                
 
         elif 'schedule_training' in request.POST:
             member_name = request.POST.get('member_name_session')
@@ -169,10 +171,11 @@ def homepage(request):
 
 def community_page(request):
     if request.method == 'POST':
+        name = request.POST['p_name']
         image_file = request.FILES['image_file']
         caption = request.POST['caption']
 
-        image = Image(image_file=image_file, caption=caption)
+        image = Image(image_file=image_file, caption=caption, name=name)
         image.save()
 
         return redirect('community_page')

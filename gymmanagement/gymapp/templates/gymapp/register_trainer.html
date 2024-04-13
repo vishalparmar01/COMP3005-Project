@@ -23,6 +23,7 @@
         <input type="submit" name="register" value="Register">
     </form>
 
+    <h1>Search Member Profile</h1>
     <form action="/register-trainer/" method="post">
         {% csrf_token %}
         <label for="search_member">Search Member Profile:</label>
@@ -37,6 +38,7 @@
         <p>Fitness Goals: {{ member_profile.fitness_goal }}</p>
     {% endif %}
 
+    <h1>Manage Schedule</h1>
     <form action="/register-trainer/" method="post">
         {% csrf_token %}
         <label for="trainer_name">Trainer Name:</label>

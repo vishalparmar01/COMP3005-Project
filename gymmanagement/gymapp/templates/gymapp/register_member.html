@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'gymapp/stylemember.css' %}">
 </head>
 <body>
+
     <h1>Register Member</h1>
     <form action="/register-member/" method="post">
         {% csrf_token %}
@@ -124,5 +125,9 @@
 
         <input type="submit" name="book_room" value="Book Room">
     </form>
+
+    
+    
+
 </body>
 </html>

@@ -14,8 +14,12 @@
         {% csrf_token %}
         <label for="image_file">Upload image:</label>
         <input id="image_file" type="file" name="image_file">
+
         <label for="caption">Caption:</label>
         <input id="caption" type="text" name="caption">
+
+        <label for="p_name">Name:</label>
+        <input id="name" type="text" name="p_name">
         <button type="submit" name="post_image">Post Image</button>
     </form>
 
@@ -32,7 +36,7 @@
             <div class="numbertext">{{ forloop.counter }} / {{ images|length }}</div>
             <img src="{{ image.image_file.url }}" style="width:100%">
             <div class="caption-container">
-                <p>{{ image.caption }}</p>
+                <p>{{ image.name }} : {{ image.caption }}</p>
             </div>
         </div>
         {% endfor %}

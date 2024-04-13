@@ -21,8 +21,9 @@ class MealPlan(models.Model):
 class Image(models.Model):
     image_file = models.ImageField(upload_to='images/')
     caption = models.CharField(max_length=200)
+    name = models.CharField(max_length=200)
 
     @classmethod
-    def post_image(cls, image_file, caption):
-        image = cls(image_file=image_file, caption=caption)
+    def post_image(cls, image_file, caption, name):
+        image = cls(image_file=image_file, caption=caption, name=name)
         image.save()
