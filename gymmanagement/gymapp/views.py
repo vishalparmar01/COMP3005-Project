@@ -21,8 +21,10 @@ def register_member(request):
             email = request.POST.get('email')
             password = request.POST.get('password')
             fitness_goal = request.POST.get('fitness_goal')
+            height = request.POST.get('height')
+            weight = request.POST.get('weight')
 
-            Member.register(connection, name, email, password, fitness_goal)
+            Member.register(connection, name, email, password, fitness_goal, weight, height)
             member_name = name  # Set the member_name to the newly registered member
 
         elif 'update' in request.POST:  # Check if the request came from the "Update" button
