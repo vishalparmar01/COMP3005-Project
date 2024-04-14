@@ -1,4 +1,12 @@
 class Trainer:
+    db_connection = None
+
+    def __init__(self, id=None, name=None, email=None, password=None):
+        self.id = id
+        self.name = name
+        self.email = email
+        self.password = password
+
     @classmethod
     def register(cls, db_connection, name, email, password):
         cursor = db_connection.cursor()
@@ -28,9 +36,9 @@ class Trainer:
         cursor = db_connection.cursor()
         cursor.execute("SELECT id FROM trainers WHERE name = %s", (trainer_name,))
         trainer_id = cursor.fetchone()[0]
-        cursor.execute(
-            "DELETE FROM trainer_schedule WHERE trainer_id = %s", (trainer_id,)
-        )
+        # cursor.execute(
+        #     "DELETE FROM trainer_schedule WHERE trainer_id = %s", (trainer_id,)
+        # )
         for time in available_times:
             cursor.execute(
                 "INSERT INTO trainer_schedule (trainer_id, available_time) VALUES (%s, %s)",
@@ -38,6 +46,7 @@ class Trainer:
             )
         db_connection.commit()
         cursor.close()
+        return trainer_id
 
     @classmethod
     def from_db_data(cls, db_connection, trainer_data):
@@ -91,3 +100,21 @@ class Trainer:
         member_data = cursor.fetchone()
         cursor.close()
         return member_data
+    
+    @classmethod
+    def get_trainers_schedule(cls,db_connection):
+        cursor = db_connection.cursor()
+        cursor.execute("""
+            SELECT t.name, ts.available_time
+            FROM trainers t
+            JOIN trainer_schedule ts ON t.id = ts.trainer_id
+            WHERE NOT EXISTS (
+                SELECT 1
+                FROM training_sessions trs
+                WHERE trs.trainer_id = t.id
+                AND trs.session_time = ts.available_time
+            )
+        """)
+        trainer_schedules = cursor.fetchall()
+        cursor.close()
+        return trainer_schedules

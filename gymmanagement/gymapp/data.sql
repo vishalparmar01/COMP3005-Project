@@ -1,7 +1,7 @@
 -- Insert data into the members table
-INSERT INTO members (name, email, password, fitness_goal, health_metrics) VALUES
-('Alice Smith', 'alice@example.com', 'password123', 'Lose weight', '{"weight": 65, "height": 170}'),
-('Bob Johnson', 'bob@example.com', 'securepw', 'Gain muscle', '{"weight": 80, "height": 185}');
+INSERT INTO members (name, email, password, fitness_goal) VALUES
+('Rahul Cheruku', 'rahulch@example.com', 'password123', 'Lose weight'),
+('Bob Johnson', 'bob@example.com', 'securepw', 'Gain muscle');
 
 -- Insert data into the trainers table
 INSERT INTO trainers (name, email, password) VALUES
@@ -31,15 +31,14 @@ INSERT INTO administrative_staff (name, email, password) VALUES
 ('Admin2', 'admin2@example.com', 'adminpass2');
 
 -- Insert data into the room_bookings table
-INSERT INTO room_bookings (room_number, booking_date, booking_time) VALUES
-(101, '2024-04-01', '10:00:00'),
-(102, '2024-04-01', NULL),
-(103, '2024-04-01', NULL),
-(104, '2024-04-01', NULL);
+INSERT INTO room_bookings (room_number, booking_date, booking_time,member_id) VALUES
+(101, '2024-04-01', '10:00:00',NULL),
+(102, '2024-04-01', NULL, NULL),
+(103, '2024-04-01', NULL, NULL),
+(104, '2024-04-01', NULL, NULL);
 
 -- Inserting data into equipment_maintenance table
-INSERT INTO equipment_maintenance (equipment_name, last_maintenance_date, maintenance_frequency) VALUES
-    ('Treadmill', '2023-01-01', '6 months'),
-    ('Elliptical Machine', '2023-02-15', '8 months'),
-    ('Stationary Bike', '2023-03-20', '12 months');
-
+INSERT INTO equipment_maintenance (equipment_name, last_maintenance_date, maintenance_frequency,staff_id) VALUES
+    ('Treadmill', '2023-01-01', '6 months', NULL),
+    ('Elliptical Machine', '2023-02-15', '8 months', NULL),
+    ('Stationary Bike', '2023-03-20', '12 months', NULL);

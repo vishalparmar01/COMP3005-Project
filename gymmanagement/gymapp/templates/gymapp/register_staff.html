@@ -1,0 +1,100 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Staff</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'gymapp/stylestaff.css' %}">
+</head>
+<body>
+    <h1>Register Administrative Staff</h1>
+    <form action="/register-staff/" method="post">
+        {% csrf_token %}
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name"><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email"><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password"><br>
+
+        <input type="submit" value="Register">
+    </form>
+
+    <h1>Manage Room Booking</h1>
+    <form action="/register-staff/" method="post">
+        {% csrf_token %}
+        <label for="member_id">Member ID:</label>
+        <input type="text" id="member_id" name="member_id"><br>
+
+        <label for="booking_date">Booking Date:</label>
+        <input type="date" id="booking_date" name="booking_date"><br>
+
+        <label for="booking_time">Booking Time:</label>
+        <input type="time" id="booking_time" name="booking_time"><br>
+
+        <input type="submit" name="manage_room_booking" value="Manage Booking">
+    </form>
+
+    {% if room_number %}
+        <h2>Room {{ room_number }} has been booked.</h2>
+    {% endif %}
+
+    <h1>Manage Equipment Maintenance</h1>
+    <form action="/register-staff/" method="post">
+        {% csrf_token %}
+        <label for="staff_name">Staff Name:</label>
+        <input type="text" id="staff_name" name="staff_name"><br>
+
+        <label for="equipment_name">Equipment Name:</label>
+        <input type="text" id="equipment_name" name="equipment_name"><br>
+
+        <label for="last_maintenance_date">Last Maintenance Date:</label>
+        <input type="date" id="last_maintenance_date" name="last_maintenance_date"><br>
+
+        <label for="frequency">Maintenance Frequency:</label>
+        <input type="text" id="frequency" name="frequency"><br>
+
+        <input type="submit" name="manage_equipment_maintenance" value="Manage Maintenance">
+    </form>
+
+    <h1>Manage Class Schedule</h1>
+    <form action="/register-staff/" method="post">
+        {% csrf_token %}
+        <label for="class_name">Class Name:</label>
+        <input type="text" id="class_name" name="class_name"><br>
+
+        <label for="description">Description:</label>
+        <input type="text" id="description" name="description"><br>
+
+        <label for="start_time">Start Time:</label>
+        <input type="time" id="start_time" name="start_time"><br>
+
+        <label for="end_time">End Time:</label>
+        <input type="time" id="end_time" name="end_time"><br>
+
+        <label for="recurrence">Recurrence:</label>
+        <input type="text" id="recurrence" name="recurrence"><br>
+
+        <input type="submit" name="update_class_schedule" value="Update Schedule">
+    </form>
+
+    <h1>Process Payment</h1>
+    <form action="/register-staff/" method="post">
+        {% csrf_token %}
+        <label for="member_name">Member Name:</label>
+        <input type="text" id="member_name" name="member_name"><br>
+
+        <label for="amount">Amount:</label>
+        <input type="number" id="amount" name="amount" step="0.01"><br>
+
+        <label for="payment_date">Payment Date:</label>
+        <input type="date" id="payment_date" name="payment_date"><br>
+
+        <input type="submit" name="process_payment" value="Process Payment">
+    </form>
+
+</body>
+</html>

@@ -1,7 +1,7 @@
 import psycopg2
-from member import Member
-from staff import AdministrativeStaff
-from trainer import Trainer
+from .member import Member
+from .staff import AdministrativeStaff
+from .trainer import Trainer
 
 # Function to create tables from DDL file
 def create_tables_and_load_data(db_connection, ddl_file_path, dml_file_path=None):
@@ -38,23 +38,24 @@ def main():
         db_connection = psycopg2.connect(
             dbname="healthproject",
             user="postgres",
-            password="tanayShah",
+            password="vishal.24",
             host="localhost",
             port="5432"
         )
 
-        ddl_file_path = "tables.sql"
-        dml_file_path = "data.sql"
+        ddl_file_path = "/Users/sahajanand/Desktop/Carleton/Winter 2024/COMP 3005/Project/COMP3005-Project/gymmanagement/gymapp/tables.sql"
+        dml_file_path = "/Users/sahajanand/Desktop/Carleton/Winter 2024/COMP 3005/Project/COMP3005-Project/gymmanagement/gymapp/data.sql"
         # Create tables from the DDL file
         create_tables_and_load_data(db_connection, ddl_file_path,dml_file_path)
         # Create a cursor object using the connection
         cursor = db_connection.cursor()
 
         # Example usage for Member
-        Member.register(db_connection,"Alice Smith", "alice.smith@example.com", "password789","Gain muscle","Weight: 150 lbs, Height: 5'7\"")
-        Member.update_profile(db_connection,"Alice Smith",'password','tanay')
-        Member.register(db_connection,"Arjun Pathak", "arjun.pathak@example.com", "password789","Gain muscle", "Weight: 150 lbs, Height: 5'7\"")
-        Member.update_profile(db_connection,"Arjun Pathak",'fitness_goal', 'Loose Fat')
+        Member.register(db_connection,"Alice Smith", "alice.smith@example.com", "password789","Gain muscle",weight=90,height=5.5)
+        Member.update_member(db_connection,"Alice Smith",'password','tanay')
+        Member.register(db_connection,"Arjun Pathak", "arjun.pathak@example.com", "password789","Gain muscle",weight=100,height=5.7)
+        Member.update_member(db_connection,"Arjun Pathak",'fitness_goal', 'Loose Fat')
+        Member.register_for_class(db_connection,"Arjun Pathak","Yoga")
 
         # Example usage for Trainer
         Trainer.register(db_connection,"Vishal Parmar", "vish.parmar@example.com", "password123")
@@ -84,13 +85,15 @@ def main():
             print("Email:", member_profile[2])
 
         # Example usage for AdministrativeStaff
-        # staff.process_payment(member_id=3, amount=50.00, payment_date="2024-04-01")
         AdministrativeStaff.register(db_connection,"Jane Smith", "jane.smith@example.com", "password456")
-        # AdministrativeStaff.manage_room_booking(db_connection,room_number=101, booking_date="2024-04-01", booking_time="10:00:00")
-        AdministrativeStaff.manage_room_booking(db_connection, booking_date="2024-04-01", booking_time="10:00:00")
-        AdministrativeStaff.manage_room_booking(db_connection, booking_date="2024-04-01", booking_time="10:00:00")
-        AdministrativeStaff.monitor_equipment_maintenance(db_connection,"Cross-fit","2024-03-15","6 Months")
+        AdministrativeStaff.manage_room_booking(db_connection,None, booking_date="2024-04-01", booking_time="10:00:00")
+        AdministrativeStaff.manage_room_booking(db_connection, None,booking_date="2024-04-01", booking_time="10:00:00")
+        AdministrativeStaff.monitor_equipment_maintenance(db_connection,"Jane Smith","Cross-fit","2024-03-15","6 Months")
         AdministrativeStaff.update_class_schedule(db_connection,"Meditation","Relaxing your Body","10:00:00","11:00:00","everyday")
+        AdministrativeStaff.process_payment(db_connection,"Arjun Pathak",100.23,"2024-03-17")
+
+        Member.update_member(db_connection,"Arjun Pathak","weight", 89.5)
+        Member.display_dashboard(db_connection,"Arjun Pathak")
 
 
     except psycopg2.Error as e:
