@@ -99,6 +99,24 @@
         <p>Please enter a member name to display the dashboard.</p>
     {% endif %}
 
+    <h1>Available Trainers</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Trainer Name</th>
+                <th>Schedule Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for schedule in trainer_schedules %}
+            <tr>
+                <td>{{ schedule.0 }}</td>
+                <td>{{ schedule.1 }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>    
+
     <h1>Schedule Training Session</h1>
     <form action="/register-member/" method="post">
         {% csrf_token %}

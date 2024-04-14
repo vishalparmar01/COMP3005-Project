@@ -65,6 +65,8 @@ def register_member(request):
             room_number = Member.book_room(
                 connection, name, booking_date, booking_time
             )
+    trainer_schedules = Trainer.get_trainers_schedule(connection)
+    print(trainer_schedules)  # Print schedules for testing
 
     if member_name:
         print(member_name)
@@ -85,7 +87,8 @@ def register_member(request):
         'column_names': column_names,
         'health_metrics': health_metrics,
         'class_schedule': class_schedule,
-        'member_name': member_name
+        'member_name': member_name,
+        'trainer_schedules': trainer_schedules 
     })
 
 def register_trainer(request):

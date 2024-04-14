@@ -100,3 +100,21 @@ class Trainer:
         member_data = cursor.fetchone()
         cursor.close()
         return member_data
+    
+    @classmethod
+    def get_trainers_schedule(cls,db_connection):
+        cursor = db_connection.cursor()
+        cursor.execute("""
+            SELECT t.name, ts.available_time
+            FROM trainers t
+            JOIN trainer_schedule ts ON t.id = ts.trainer_id
+            WHERE NOT EXISTS (
+                SELECT 1
+                FROM training_sessions trs
+                WHERE trs.trainer_id = t.id
+                AND trs.session_time = ts.available_time
+            )
+        """)
+        trainer_schedules = cursor.fetchall()
+        cursor.close()
+        return trainer_schedules
