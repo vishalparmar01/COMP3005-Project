@@ -12,6 +12,25 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
+import psycopg2
+
+# Create a database
+try:
+    db_connection = psycopg2.connect(
+        dbname="postgres",
+        user="postgres",
+        password="tanayShah",
+        host="localhost",
+        port="5432"
+    )
+    # Create a cursor object using the connection
+    db_connection.autocommit = True  # Enable autocommit mode
+    cursor = db_connection.cursor()
+    cursor.execute("CREATE DATABASE healthproject")
+    cursor.close()
+    db_connection.close()
+except psycopg2.Error as e:
+    print("Error creating database:", e)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent

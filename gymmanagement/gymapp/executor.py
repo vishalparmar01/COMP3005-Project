@@ -1,7 +1,7 @@
 import psycopg2
-from member import Member
-from staff import AdministrativeStaff
-from trainer import Trainer
+from .member import Member
+from .staff import AdministrativeStaff
+from .trainer import Trainer
 
 # Function to create tables from DDL file
 def create_tables_and_load_data(db_connection, ddl_file_path, dml_file_path=None):
