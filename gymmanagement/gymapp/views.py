@@ -138,6 +138,8 @@ def register_staff(request):
             member_id = request.POST.get('member_id')
             booking_date = request.POST.get('booking_date')
             booking_time = request.POST.get('booking_time')
+            if member_id == '':
+                member_id = None
             if booking_date and booking_time:  # Check if the fields are not empty
                 room_number = AdministrativeStaff.manage_room_booking(connection, member_id, booking_date, booking_time)
 

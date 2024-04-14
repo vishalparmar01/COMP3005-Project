@@ -38,6 +38,10 @@
         <input type="submit" name="manage_room_booking" value="Manage Booking">
     </form>
 
+    {% if room_number %}
+        <h2>Room {{ room_number }} has been booked.</h2>
+    {% endif %}
+
     <h1>Manage Equipment Maintenance</h1>
     <form action="/register-staff/" method="post">
         {% csrf_token %}
@@ -55,10 +59,6 @@
 
         <input type="submit" name="manage_equipment_maintenance" value="Manage Maintenance">
     </form>
-
-    {% if room_number %}
-        <h2>Room {{ room_number }} has been booked.</h2>
-    {% endif %}
 
     <h1>Manage Class Schedule</h1>
     <form action="/register-staff/" method="post">

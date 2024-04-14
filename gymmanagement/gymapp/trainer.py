@@ -36,9 +36,9 @@ class Trainer:
         cursor = db_connection.cursor()
         cursor.execute("SELECT id FROM trainers WHERE name = %s", (trainer_name,))
         trainer_id = cursor.fetchone()[0]
-        cursor.execute(
-            "DELETE FROM trainer_schedule WHERE trainer_id = %s", (trainer_id,)
-        )
+        # cursor.execute(
+        #     "DELETE FROM trainer_schedule WHERE trainer_id = %s", (trainer_id,)
+        # )
         for time in available_times:
             cursor.execute(
                 "INSERT INTO trainer_schedule (trainer_id, available_time) VALUES (%s, %s)",
